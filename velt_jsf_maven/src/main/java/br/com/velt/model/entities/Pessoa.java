@@ -6,11 +6,8 @@ package br.com.velt.model.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import org.hibernate.annotations.ForeignKey;
 
 /**
  *
@@ -18,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table (name="pessoa")
-public class Pessoas implements Serializable{
+public class Pessoa implements Serializable{
     
     private static final long serialVersionUID = 1L;
     
@@ -35,11 +32,17 @@ public class Pessoas implements Serializable{
     @Column (name="CPF",nullable=false)
     private String cpf;
     @Column (name="DataDeNascimento",nullable=false)
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataDeNascimeto;
     @Column (name="DataDeCadastro",nullable=false)
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date dataDeCadastro;
 
-    public Pessoas() {
+    @ManyToOne (optional=false)
+    @ForeignKey (name="PessoaSexo")
+    private Pessoa pessoa;
+    
+    public Pessoa() {
     }
 
     public String getCpf() {
@@ -106,7 +109,7 @@ public class Pessoas implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Pessoas other = (Pessoas) obj;
+        final Pessoa other = (Pessoa) obj;
         if (this.idPessoa != other.idPessoa && (this.idPessoa == null || !this.idPessoa.equals(other.idPessoa))) {
             return false;
         }
